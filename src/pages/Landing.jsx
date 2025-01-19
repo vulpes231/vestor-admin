@@ -14,7 +14,7 @@ const Landing = () => {
   });
   const [error, setError] = useState("");
 
-  const { loginLoading, loginError, accessToken } = useSelector(
+  const { loginLoading, loginError, accessToken, username } = useSelector(
     (state) => state.auth
   );
 
@@ -28,10 +28,12 @@ const Landing = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError("");
     if (!form.username) {
       setError("Username is required!");
       return;
     }
+    console.log(form);
     dispatch(auth(form));
   };
 
@@ -44,13 +46,14 @@ const Landing = () => {
   useEffect(() => {
     if (accessToken) {
       sessionStorage.setItem("accessToken", accessToken);
+      sessionStorage.setItem("admin", username);
       navigate("/dashboard");
     }
-  }, [accessToken, navigate]);
+  }, [accessToken, navigate, username]);
 
   return (
     <section className={`${styles.wrapper} flex items-center justify-center`}>
-      <div className="bg-white md:w-[400px] md:mx-auto p-6 flex flex-col gap-6 shadow-md rounded-sm">
+      <div className="bg-stone-800 md:w-[400px] md:mx-auto p-6 flex flex-col gap-6 shadow-md rounded-lg text-slate-100 border border-stone-600">
         <h3 className="uppercase font-semibold">admin login</h3>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className={styles.inputHolder}>
@@ -81,7 +84,7 @@ const Landing = () => {
           {error && <p className="text-red-500">{error}</p>}
           <button
             type="submit"
-            className={`${styles.button} rounded-sm shadow-md`}
+            className={`${styles.button} rounded-3xl shadow-md`}
           >
             {!loginLoading ? "login" : "wait..."}
           </button>

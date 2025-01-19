@@ -18,7 +18,7 @@ const initialState = {
 };
 
 export const getUsers = createAsyncThunk("users/getUsers", async () => {
-  const url = `${liveServer}/usercontrol`;
+  const url = `${liveServer}/manageadmin/users`;
   const accessToken = getAccessToken();
   try {
     const response = await axios.get(url, {
@@ -38,7 +38,7 @@ export const getUsers = createAsyncThunk("users/getUsers", async () => {
 export const getUserInfo = createAsyncThunk(
   "users/getUserInfo",
   async (userId) => {
-    const url = `${liveServer}/usercontrol/${userId}`;
+    const url = `${liveServer}/manageadmin/${userId}`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.get(url, {

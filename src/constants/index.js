@@ -20,7 +20,7 @@ const sendError = (error) => {
   }
 };
 
-const liveServer = `https://lith-ui.onrender.com`;
-const devServer = `http://localhost:5000`;
+const liveServer = `https://vestor-server.onrender.com`;
+const devServer = `http://localhost:4000`;
 
 export { getAccessToken, sendError, liveServer, devServer };

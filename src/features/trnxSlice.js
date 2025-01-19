@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { devServer, getAccessToken, liveServer, sendError } from "../constants";
 import axios from "axios";
@@ -15,7 +16,7 @@ const initialState = {
 };
 
 export const getAllTrnx = createAsyncThunk("trnx/getTrnxs", async () => {
-  const url = `${liveServer}/trnxs`;
+  const url = `${liveServer}/managetrnx`;
   const accessToken = getAccessToken();
   try {
     const response = await axios.get(url, {
@@ -34,7 +35,7 @@ export const getAllTrnx = createAsyncThunk("trnx/getTrnxs", async () => {
 export const getTrnxById = createAsyncThunk(
   "trnx/getTrnxById",
   async (transactionId) => {
-    const url = `${liveServer}/trnxs/${transactionId}`;
+    const url = `${liveServer}/managetrnx/${transactionId}`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.get(url, {
@@ -54,7 +55,7 @@ export const getTrnxById = createAsyncThunk(
 export const approveTrnx = createAsyncThunk(
   "trnx/approveTrnx",
   async (transactionId) => {
-    const url = `${liveServer}/trnxs/${transactionId}`;
+    const url = `${liveServer}/managetrnx/${transactionId}`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.post(
