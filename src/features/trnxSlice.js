@@ -55,7 +55,7 @@ export const getTrnxById = createAsyncThunk(
 export const approveTrnx = createAsyncThunk(
   "trnx/approveTrnx",
   async (transactionId) => {
-    const url = `${liveServer}/managetrnx/${transactionId}`;
+    const url = `${devServer}/managetrnx/${transactionId}`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.post(

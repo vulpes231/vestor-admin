@@ -22,6 +22,10 @@ const headers = [
     name: "Verified",
   },
   {
+    id: "isProfileComplete",
+    name: "Profile",
+  },
+  {
     id: "actions",
     name: "Actions",
   },
@@ -65,6 +69,7 @@ const Users = ({ setActive }) => {
         </select>
       ),
       isKycVerified: user.isKycVerified ? "Verified" : "Not Verified",
+      isProfileComplete: user.isProfileComplete ? "complete" : "incomplete",
     }));
 
   if (usersError) {

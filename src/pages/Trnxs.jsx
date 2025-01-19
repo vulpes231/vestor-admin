@@ -10,15 +10,15 @@ import Approvemodal from "../components/Approvemodal";
 
 const headers = [
   {
-    id: "username",
-    name: "User",
+    id: "email",
+    name: "Email",
   },
   {
-    id: "gateway",
-    name: "Gateway",
+    id: "coin",
+    name: "Coin",
   },
   {
-    id: "transactionType",
+    id: "type",
     name: "Type",
   },
   {
@@ -71,7 +71,6 @@ const Trnxs = ({ setActive }) => {
   }, [error]);
 
   const handleAction = (action, transactionId, currentStatus) => {
-    console.log(`Action: ${action}, Transaction ID: ${transactionId}`);
     setTransactionId(transactionId);
     setStatus(currentStatus);
     if (action === "approve") {
