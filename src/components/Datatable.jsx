@@ -7,7 +7,7 @@ const Datatable = ({ headers, data, rowKey }) => {
     <div className={`overflow-auto `}>
       <table className="min-w-full bg-white">
         <thead>
-          <tr className="bg-black text-slate-100 capitalize">
+          <tr className="bg-stone-900 text-slate-100 capitalize">
             {headers &&
               headers.map((hd) => (
                 <th className="px-6 py-2.5 text-left" key={hd.id}>
@@ -21,11 +21,24 @@ const Datatable = ({ headers, data, rowKey }) => {
           {data &&
             data.map((row, index) => (
               <tr key={rowKey ? row[rowKey] : index} className="border-t">
-                {headers.map((header) => (
-                  <td key={header.id} className="px-6 py-2.5">
-                    {row[header.id] || "-"}
-                  </td>
-                ))}
+                {headers.map((header) => {
+                  // console.log(header);
+                  return (
+                    <td key={header.id} className="px-6 py-2.5 text-sm">
+                      <span
+                        className={`${
+                          row[header.id] === "complete"
+                            ? "bg-green-200 px-5 py-1.5 text-green-500 rounded-3xl "
+                            : row[header.id] === "incomplete"
+                            ? "bg-red-200 px-5 py-1.5 text-red-500 rounded-3xl "
+                            : null
+                        } ${header.id === "coin" && "uppercase"} `}
+                      >
+                        {row[header.id] || "-"}
+                      </span>
+                    </td>
+                  );
+                })}
               </tr>
             ))}
         </tbody>

@@ -64,12 +64,12 @@ const App = () => {
       <aside
         className={
           token
-            ? `hidden md:flex h-full flex-col bg-black text-slate-100 w-[280px] p-6 gap-6`
+            ? `hidden md:flex h-screen flex-col bg-stone-900 text-slate-100 w-[350px] p-6 gap-6`
             : "hidden"
         }
       >
         <span className="w-full flex justify-between items-center">
-          <h3 className="capitalize font-semibold text-2xl">finance hedge</h3>
+          <h3 className="capitalize font-semibold text-2xl">Vestor Admin</h3>
         </span>
         <div className="flex flex-col gap-6">
           {authLinks.map((link) => {
