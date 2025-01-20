@@ -26,12 +26,12 @@ const authLinks = [
   },
   {
     id: "trnxs",
-    name: "trnxs",
+    name: "transactions",
     path: "/trnxs",
   },
   {
     id: "pools",
-    name: "pools",
+    name: "trades",
     path: "/pools",
   },
 ];
@@ -78,9 +78,9 @@ const App = () => {
                 <MdHome />
               ) : link.name === "users" ? (
                 <FaUser />
-              ) : link.name === "trnxs" ? (
+              ) : link.name === "transactions" ? (
                 <FaBuyNLarge />
-              ) : link.name === "pools" ? (
+              ) : link.name === "trades" ? (
                 <MdWallet />
               ) : null;
             return (
