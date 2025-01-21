@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getAccessToken } from "../constants";
+import { getAccessToken, liveServer } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../features/userSlice";
 import { styles } from "../constants/styles";
@@ -125,6 +125,7 @@ const ContactInfo = ({ user }) => {
 };
 
 const Verifications = ({ user }) => {
+  console.log(user);
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-between items-center ">
@@ -132,7 +133,7 @@ const Verifications = ({ user }) => {
           <MdSupportAgent />
           KYC Verified
         </label>
-        <span>{user?.isKycVerified ? "Yes" : "No"}</span>
+        <span>{user?.isKYCVerified ? "Yes" : "No"}</span>
       </div>
       <div className="flex justify-between items-center">
         <label className={`${styles.label} flex gap-1 items-center`} htmlFor="">
@@ -154,7 +155,11 @@ const Verification = ({ user }) => {
 
   const handleVerify = (e) => {
     e.preventDefault();
-    dispatch(verifyUser(user._id));
+    const data = {
+      userId: user._id,
+      verifyId: verifyInfo[0]._id,
+    };
+    dispatch(verifyUser(data));
   };
 
   useEffect(() => {
@@ -169,8 +174,10 @@ const Verification = ({ user }) => {
     }
   }, [userVerified]);
 
+  // console.log(verifyInfo);
+
   useEffect(() => {
-    if (user.documentSubmitted) {
+    if (user) {
       dispatch(getVerifyInfo(user._id));
     }
   }, [user, dispatch]);
@@ -183,14 +190,31 @@ const Verification = ({ user }) => {
         Verification Documents
       </h3>
       <div className={`${show ? "flex" : "hidden"}`}>
-        {user.documentSubmitted ? (
+        {verifyInfo ? (
           <div className="flex flex-col gap-2">
-            <div className="flex gap-2 items-center overflow-auto">
-              <p>{verifyInfo?.fullname}</p>
-              <p>{verifyInfo?.gender}</p>
-              <p>{verifyInfo?.occupation}</p>
-              <p>{verifyInfo?.image}</p>
-              <p>{verifyInfo?.status}</p>
+            <div className="flex  flex-col gap-2 ">
+              <h4>
+                Date of birth: <small> {verifyInfo[0]?.dob}</small>
+              </h4>
+              <h4>
+                Employment: <small> {verifyInfo[0]?.employment}</small>
+              </h4>
+              <h4>
+                ID Number: <small> {verifyInfo[0]?.idNumber}</small>
+              </h4>
+              <h4>
+                ID Type: <small> {verifyInfo[0]?.idType}</small>
+              </h4>
+              <h4 className="">
+                Uploaded ID Pic:{" "}
+                <small className="whitespace-nowrap cursor-pointer">
+                  {" "}
+                  {`${liveServer}/${verifyInfo[0]?.imagePath.slice(0, 10)}...`}
+                </small>
+              </h4>
+              <h4>
+                Status: <small> {verifyInfo[0]?.status}</small>
+              </h4>
             </div>
             <button
               onClick={handleVerify}

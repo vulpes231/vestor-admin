@@ -18,7 +18,7 @@ const headers = [
     name: "Email",
   },
   {
-    id: "isKycVerified",
+    id: "isKYCVerified",
     name: "Verified",
   },
   {
@@ -68,7 +68,7 @@ const Users = ({ setActive }) => {
           <option value="delete">Delete</option>
         </select>
       ),
-      isKycVerified: user.isKycVerified ? "Verified" : "Not Verified",
+      isKYCVerified: user.isKYCVerified ? "Verified" : "Not Verified",
       isProfileComplete: user.isProfileComplete ? "complete" : "incomplete",
     }));
 

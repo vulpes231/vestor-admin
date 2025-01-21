@@ -14,20 +14,17 @@ const initialState = {
 
 export const verifyUser = createAsyncThunk(
   "verify/verifyUser",
-  async (userId) => {
-    const url = `${liveServer}/verifyuser/${userId}`;
+  async (formData) => {
+    console.log(formData);
+    const url = `${liveServer}/manageverify`;
     const accessToken = getAccessToken();
     try {
-      const response = await axios.put(
-        url,
-        {},
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const response = await axios.post(url, formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       return response.data;
     } catch (error) {
       sendError(error);
@@ -38,7 +35,7 @@ export const verifyUser = createAsyncThunk(
 export const getVerifyInfo = createAsyncThunk(
   "verify/getVerifyInfo",
   async (userId) => {
-    const url = `${liveServer}/verifyuser/${userId}`;
+    const url = `${liveServer}/manageverify/${userId}`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.get(url, {
@@ -72,7 +69,7 @@ const verifySlice = createSlice({
       .addCase(getVerifyInfo.fulfilled, (state, action) => {
         state.getInfoLoading = false;
         state.getInfoError = false;
-        state.verifyInfo = action.payload.verificationInfo;
+        state.verifyInfo = action.payload.verifyRequest;
       })
       .addCase(getVerifyInfo.rejected, (state, action) => {
         state.getInfoLoading = false;
