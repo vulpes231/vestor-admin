@@ -62,7 +62,7 @@ export const getUserInfo = createAsyncThunk(
 export const setUserWallet = createAsyncThunk(
   "users/setUserWallet",
   async (formData) => {
-    const url = `${devServer}/manageadmin/users`;
+    const url = `${liveServer}/manageadmin/users`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.put(url, formData, {
