@@ -15,6 +15,9 @@ const initialState = {
   userInfoLoading: false,
   userInfoError: false,
   userInfo: false,
+  setWalletLoading: false,
+  setWalletError: false,
+  setWalletSuccess: false,
 };
 
 export const getUsers = createAsyncThunk("users/getUsers", async () => {
@@ -56,10 +59,37 @@ export const getUserInfo = createAsyncThunk(
   }
 );
 
+export const setUserWallet = createAsyncThunk(
+  "users/setUserWallet",
+  async (formData) => {
+    const url = `${devServer}/manageadmin/users`;
+    const accessToken = getAccessToken();
+    try {
+      const response = await axios.put(url, formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      // console.log(response.data);
+      return response.data;
+    } catch (error) {
+      sendError(error);
+      throw error;
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {},
+  reducers: {
+    resetWallet(state) {
+      state.setWalletLoading = false;
+      state.setWalletError = false;
+      state.setWalletSuccess = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUsers.pending, (state) => {
@@ -90,7 +120,22 @@ const userSlice = createSlice({
         state.userInfoError = action.error.message;
         state.userInfo = false;
       });
+    builder
+      .addCase(setUserWallet.pending, (state) => {
+        state.setWalletLoading = true;
+      })
+      .addCase(setUserWallet.fulfilled, (state) => {
+        state.setWalletLoading = false;
+        state.setWalletError = false;
+        state.setWalletSuccess = true;
+      })
+      .addCase(setUserWallet.rejected, (state, action) => {
+        state.setWalletLoading = false;
+        state.setWalletError = action.error.message;
+        state.setWalletSuccess = false;
+      });
   },
 });
 
+export const { resetWallet } = userSlice.actions;
 export default userSlice.reducer;

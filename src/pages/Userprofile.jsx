@@ -9,61 +9,61 @@ import { styles } from "../constants/styles";
 
 import { MdMail, MdSupportAgent } from "react-icons/md";
 import { getVerifyInfo, verifyUser } from "../features/verifySlice";
+import Walletinfo from "../components/Walletinfo";
 
 const PersonalInfo = ({ user }) => {
   return (
-    <div>
-      <form action="">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className={styles.inputHolder}>
-            <label className={styles.label} htmlFor="">
-              First Name
-            </label>
-            <input
-              type="text"
-              readOnly
-              value={user?.firstname}
-              className={styles.input}
-            />
-          </div>
-          <div className={styles.inputHolder}>
-            <label className={styles.label} htmlFor="">
-              Last Name
-            </label>
-            <input
-              type="text"
-              readOnly
-              value={user?.lastname}
-              className={styles.input}
-            />
-          </div>
+    <form action="" className="flex flex-col gap-6 w-full">
+      <h3 className="text-2xl font-bold capitalize">Personal Information</h3>
+      <div className="flex flex-col md:flex-row gap-4 w-full">
+        <div className={styles.inputHolder}>
+          <label className={styles.label} htmlFor="">
+            First Name
+          </label>
+          <input
+            type="text"
+            readOnly
+            value={user?.firstname}
+            className={styles.input}
+          />
         </div>
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className={styles.inputHolder}>
-            <label className={styles.label} htmlFor="">
-              Username
-            </label>
-            <input
-              type="text"
-              readOnly
-              value={user?.username}
-              className={styles.input}
-            />
-          </div>
-          <div className={styles.inputHolder}>
-            <label className={styles.label} htmlFor="">
-              Email
-            </label>
-            <input
-              type="text"
-              readOnly
-              value={user?.email}
-              className={styles.input}
-            />
-          </div>
+        <div className={styles.inputHolder}>
+          <label className={styles.label} htmlFor="">
+            Last Name
+          </label>
+          <input
+            type="text"
+            readOnly
+            value={user?.lastname}
+            className={styles.input}
+          />
         </div>
-      </form>
-    </div>
+      </div>
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className={styles.inputHolder}>
+          <label className={styles.label} htmlFor="">
+            Username
+          </label>
+          <input
+            type="text"
+            readOnly
+            value={user?.username}
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.inputHolder}>
+          <label className={styles.label} htmlFor="">
+            Email
+          </label>
+          <input
+            type="text"
+            readOnly
+            value={user?.email}
+            className={styles.input}
+          />
+        </div>
+      </div>
+    </form>
   );
 };
 
@@ -125,9 +125,11 @@ const ContactInfo = ({ user }) => {
 };
 
 const Verifications = ({ user }) => {
-  console.log(user);
   return (
     <div className="flex flex-col gap-6">
+      <h3 className="text-2xl capitalize font-bold">
+        Verification Information
+      </h3>
       <div className="flex justify-between items-center ">
         <label className={`${styles.label} flex gap-1 items-center`} htmlFor="">
           <MdSupportAgent />
@@ -173,8 +175,6 @@ const Verification = ({ user }) => {
       window.location.reload();
     }
   }, [userVerified]);
-
-  // console.log(verifyInfo);
 
   useEffect(() => {
     if (user) {
@@ -250,13 +250,14 @@ const Userprofile = ({ setActive }) => {
   }, [accessToken, userId, dispatch]);
   return (
     <section className={`${styles.authWrapper} p-6 overflow-auto`}>
-      <div className="w-full lg:w-[600px] lg:mx-auto  p-6 flex flex-col gap-6">
+      <div className="w-full lg:w-[700px] lg:mx-auto  p-6 flex flex-col gap-6">
         <h3 className={styles.title}>User Profile</h3>
-        <div className="flex flex-col gap-6 bg-white p-10">
+        <div className="flex flex-col gap-10 bg-white p-10">
           <PersonalInfo user={userInfo} />
           <ContactInfo user={userInfo} />
           <Verifications user={userInfo} />
           <Verification user={userInfo} />
+          <Walletinfo user={userInfo} />
         </div>
       </div>
     </section>
