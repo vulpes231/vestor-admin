@@ -18,6 +18,12 @@ const initialState = {
   setWalletLoading: false,
   setWalletError: false,
   setWalletSuccess: false,
+  disableLoading: false,
+  disableError: false,
+  disableSuccess: false,
+  enableLoading: false,
+  enableError: false,
+  enableSuccess: false,
 };
 
 export const getUsers = createAsyncThunk("users/getUsers", async () => {
@@ -80,6 +86,48 @@ export const setUserWallet = createAsyncThunk(
   }
 );
 
+export const disableWithdraw = createAsyncThunk(
+  "users/disableWithdraw",
+  async (formData) => {
+    const url = `${liveServer}/manageadmin/setwithdraw`;
+    const accessToken = getAccessToken();
+    try {
+      const response = await axios.post(url, formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      // console.log(response.data);
+      return response.data;
+    } catch (error) {
+      sendError(error);
+      throw error;
+    }
+  }
+);
+
+export const enableWithdraw = createAsyncThunk(
+  "users/enableWithdraw",
+  async (userId) => {
+    const url = `${liveServer}/manageadmin/setwithdraw`;
+    const accessToken = getAccessToken();
+    try {
+      const response = await axios.put(url, userId, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      // console.log(response.data);
+      return response.data;
+    } catch (error) {
+      sendError(error);
+      throw error;
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "users",
   initialState,
@@ -88,6 +136,16 @@ const userSlice = createSlice({
       state.setWalletLoading = false;
       state.setWalletError = false;
       state.setWalletSuccess = false;
+    },
+    resetDisableWithdraw(state) {
+      state.disableError = false;
+      state.disableLoading = false;
+      state.disableSuccess = false;
+    },
+    resetEnableWithdraw(state) {
+      state.enableError = false;
+      state.enableLoading = false;
+      state.enableSuccess = false;
     },
   },
   extraReducers: (builder) => {
@@ -134,8 +192,38 @@ const userSlice = createSlice({
         state.setWalletError = action.error.message;
         state.setWalletSuccess = false;
       });
+    builder
+      .addCase(disableWithdraw.pending, (state) => {
+        state.disableLoading = true;
+      })
+      .addCase(disableWithdraw.fulfilled, (state) => {
+        state.disableLoading = false;
+        state.disableError = false;
+        state.disableSuccess = true;
+      })
+      .addCase(disableWithdraw.rejected, (state, action) => {
+        state.disableLoading = false;
+        state.disableError = action.error.message;
+        state.disableSuccess = false;
+      });
+    builder
+      .addCase(enableWithdraw.pending, (state) => {
+        state.enableLoading = true;
+      })
+      .addCase(enableWithdraw.fulfilled, (state) => {
+        state.enableLoading = false;
+        state.enableError = false;
+        state.enableSuccess = true;
+      })
+      .addCase(enableWithdraw.rejected, (state, action) => {
+        state.enableLoading = false;
+        state.enableError = action.error.message;
+        state.enableSuccess = false;
+      });
   },
 });
 
-export const { resetWallet } = userSlice.actions;
+export const { resetWallet, resetDisableWithdraw, resetEnableWithdraw } =
+  userSlice.actions;
+
 export default userSlice.reducer;

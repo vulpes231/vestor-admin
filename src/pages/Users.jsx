@@ -77,8 +77,8 @@ const Users = ({ setActive }) => {
   }
 
   return (
-    <section className={`${styles.authWrapper} p-6`}>
-      <div className="flex flex-col gap-6">
+    <section className={`h-screen overflow-auto p-6`}>
+      <div className="flex flex-col gap-6 ">
         <h3 className={styles.title}>Users</h3>
         <Datatable headers={headers} data={modifiedUsers} rowKey="_id" />
       </div>

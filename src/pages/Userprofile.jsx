@@ -10,6 +10,7 @@ import { styles } from "../constants/styles";
 import { MdMail, MdSupportAgent } from "react-icons/md";
 import { getVerifyInfo, verifyUser } from "../features/verifySlice";
 import Walletinfo from "../components/Walletinfo";
+import Disablewithdraw from "../components/Disablewithdraw";
 
 const PersonalInfo = ({ user }) => {
   return (
@@ -258,6 +259,7 @@ const Userprofile = ({ setActive }) => {
           <Verifications user={userInfo} />
           <Verification user={userInfo} />
           <Walletinfo user={userInfo} />
+          <Disablewithdraw user={userInfo} />
         </div>
       </div>
     </section>
