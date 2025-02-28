@@ -12,6 +12,9 @@ import Users from "./pages/Users";
 import { getAccessToken } from "./constants";
 import { useSelector } from "react-redux";
 import Userprofile from "./pages/Userprofile";
+import Createtrade from "./pages/Createtrade";
+import Ticket from "./pages/Ticket";
+import { BiSupport } from "react-icons/bi";
 
 const authLinks = [
   {
@@ -33,6 +36,11 @@ const authLinks = [
     id: "pools",
     name: "trades",
     path: "/pools",
+  },
+  {
+    id: "ticket",
+    name: "tickets",
+    path: "/ticket",
   },
 ];
 
@@ -82,6 +90,8 @@ const App = () => {
                 <FaBuyNLarge />
               ) : link.name === "trades" ? (
                 <MdWallet />
+              ) : link.name === "tickets" ? (
+                <BiSupport />
               ) : null;
             return (
               <Link
@@ -109,6 +119,11 @@ const App = () => {
           <Route path="/users" element={<Users setActive={setActive} />} />
           <Route path="/pools" element={<Pools setActive={setActive} />} />
           <Route path="/trnxs" element={<Trnxs setActive={setActive} />} />
+          <Route
+            path="/create-trade"
+            element={<Createtrade setActive={setActive} />}
+          />
+          <Route path="/ticket" element={<Ticket setActive={setActive} />} />
           <Route
             path="/userprofile/:userId"
             element={<Userprofile setActive={setActive} />}

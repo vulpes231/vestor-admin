@@ -4,6 +4,7 @@ import userReducer from "../features/userSlice";
 import poolReducer from "../features/poolSlice";
 import trnxReducer from "../features/trnxSlice";
 import verifyReducer from "../features/verifySlice";
+import ticketReducer from "../features/ticketSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     invest: poolReducer,
     trnx: trnxReducer,
     verify: verifyReducer,
+    ticket: ticketReducer,
   },
 });
 

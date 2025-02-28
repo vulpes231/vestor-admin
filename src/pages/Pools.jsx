@@ -6,23 +6,28 @@ import { styles } from "../constants/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken } from "../constants";
 import { getInvestments } from "../features/poolSlice";
+import { Link } from "react-router-dom";
 
 const headers = [
   {
-    id: "gateway",
-    name: "From",
+    id: "_id",
+    name: "Trade ID",
   },
   {
     id: "amount",
     name: "Amount",
   },
   {
-    id: "network",
-    name: "Plan",
+    id: "market",
+    name: "Asset",
   },
   {
     id: "status",
     name: "Status",
+  },
+  {
+    id: "roi",
+    name: "roi",
   },
   {
     id: "actions",
@@ -35,6 +40,8 @@ const Pools = ({ setActive }) => {
   const [error, setError] = useState(false);
   const { pools, getPoolError } = useSelector((state) => state.invest);
   const accessToken = getAccessToken();
+
+  // console.log(pools);
 
   const handleAction = (action, poolId) => {
     console.log(`Action: ${action}, Pool ID: ${poolId}`);
@@ -54,7 +61,7 @@ const Pools = ({ setActive }) => {
           <option value="delete">Delete</option>
         </select>
       ),
-      status: pool.status ? "Active" : "Inactive",
+      status: pool.status,
     }));
 
   useEffect(() => {
@@ -88,7 +95,15 @@ const Pools = ({ setActive }) => {
   return (
     <section className={`${styles.authWrapper} p-6`}>
       <div className="flex flex-col gap-6">
-        <h3 className={styles.title}>Pools</h3>
+        <div className="flex justify-between items-center ">
+          <h3 className={styles.title}>Pools</h3>
+          <Link
+            to={"/create-trade"}
+            className="w-[120px] h-[38px] flex items-center justify-center bg-green-600 text-[#fff] font-medium capitalize rounded-[5px]"
+          >
+            create trade
+          </Link>
+        </div>
         <Datatable headers={headers} data={modifiedPools} rowKey="_id" />
       </div>
     </section>

@@ -7,7 +7,7 @@ const Datatable = ({ headers, data, rowKey }) => {
   const rowsPerPage = 10;
 
   // Calculate the total number of pages
-  const totalPages = Math.ceil(data.length / rowsPerPage);
+  const totalPages = Math.ceil(data?.length / rowsPerPage);
 
   // Get the rows for the current page
   const indexOfLastRow = currentPage * rowsPerPage;
@@ -53,7 +53,11 @@ const Datatable = ({ headers, data, rowKey }) => {
                           : null
                       } ${header.id === "coin" && "uppercase"}`}
                     >
-                      {row[header.id] || "-"}
+                      {header.id === "roi"
+                        ? row[header.id] === 0
+                          ? 0
+                          : row[header.id]
+                        : row[header.id] || "-"}
                     </span>
                   </td>
                 ))}
