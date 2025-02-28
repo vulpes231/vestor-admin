@@ -28,7 +28,7 @@ const initialState = {
 export const getInvestments = createAsyncThunk(
   "invest/getInvestments",
   async () => {
-    const url = `${devServer}/managetrade`;
+    const url = `${liveServer}/managetrade`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.get(url, {
@@ -49,7 +49,7 @@ export const getInvestments = createAsyncThunk(
 export const getUserBots = createAsyncThunk(
   "invest/getUserBots",
   async (userId) => {
-    const url = `${devServer}/managepool/${userId}`;
+    const url = `${liveServer}/managepool/${userId}`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.get(url, {
@@ -68,7 +68,7 @@ export const getUserBots = createAsyncThunk(
 );
 
 export const getTrade = createAsyncThunk("invest/getTrade", async (tradeId) => {
-  const url = `${devServer}/managetrade/${tradeId}`;
+  const url = `${liveServer}/managetrade/${tradeId}`;
   const accessToken = getAccessToken();
   try {
     const response = await axios.get(url, {
@@ -88,7 +88,7 @@ export const getTrade = createAsyncThunk("invest/getTrade", async (tradeId) => {
 export const createTrade = createAsyncThunk(
   "invest/createTrade",
   async (formData) => {
-    const url = `${devServer}/managetrade`;
+    const url = `${liveServer}/managetrade`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.post(url, formData, {
@@ -109,7 +109,8 @@ export const createTrade = createAsyncThunk(
 export const editTrade = createAsyncThunk(
   "invest/editTrade",
   async (formData) => {
-    const url = `${devServer}/managetrade`;
+    const url = `${liveServer}/managetrade`;
+
     const accessToken = getAccessToken();
     try {
       const response = await axios.put(url, formData, {
@@ -118,7 +119,7 @@ export const editTrade = createAsyncThunk(
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      // console.log(response.data);
+      console.log(response.data);
       return response.data;
     } catch (error) {
       sendError(error);

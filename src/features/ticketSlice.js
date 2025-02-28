@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { devServer, getAccessToken, sendError } from "../constants";
+import { liveServer, devServer, getAccessToken, sendError } from "../constants";
 import axios from "axios";
 
 const initialState = {
@@ -18,7 +18,7 @@ export const getAllTickets = createAsyncThunk(
   "ticket/getAllTickets",
   async () => {
     try {
-      const url = `${devServer}/manageticket`;
+      const url = `${liveServer}/manageticket`;
       const accessToken = getAccessToken();
       const response = await axios.get(url, {
         headers: {
@@ -37,7 +37,7 @@ export const getUserTicket = createAsyncThunk(
   "ticket/getUserTicket",
   async (ticketId) => {
     try {
-      const url = `${devServer}/manageticket/${ticketId}`;
+      const url = `${liveServer}/manageticket/${ticketId}`;
       const accessToken = getAccessToken();
       const response = await axios.get(url, {
         headers: {
@@ -56,7 +56,7 @@ export const replyTicket = createAsyncThunk(
   "ticket/replyTicket",
   async (formData) => {
     try {
-      const url = `${devServer}/manageticket`;
+      const url = `${liveServer}/manageticket`;
       const accessToken = getAccessToken();
       const response = await axios.post(url, formData, {
         headers: {

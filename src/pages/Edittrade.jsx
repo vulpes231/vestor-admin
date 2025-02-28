@@ -37,12 +37,12 @@ const Edittrade = () => {
 
   const handleSend = (e) => {
     e.preventDefault();
-    if (!form.message) {
-      setError("Enter a message!");
+    if (!form.amount) {
+      setError("Enter amount!");
       return;
     }
     const data = {
-      amount: form.amount,
+      roi: form.amount,
       action: form.action,
       tradeId: tradeId,
     };
