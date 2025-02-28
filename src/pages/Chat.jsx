@@ -140,7 +140,7 @@ const Chat = () => {
 
           <button
             type="submit"
-            className="bg-green-600 text-[#fff] rounded-[5px] w-[110px] h-[38px] w-full"
+            className="bg-green-600 text-[#fff] rounded-[5px] h-[38px] w-full"
           >
             {!replyTicketLoading ? "Send" : "Sending..."}
           </button>

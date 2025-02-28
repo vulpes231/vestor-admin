@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken } from "../constants";
 import { getUsers } from "../features/userSlice";
 import { createTrade, getUserBots } from "../features/poolSlice";
+import Loadingmodal from "../components/Loadingmodal";
+import Errormodal from "../components/Errormodal";
+import Successmodal from "../components/Successmodal";
 
 const markets = [
   {
@@ -205,21 +208,9 @@ const Createtrade = () => {
           </div>
         </form>
       </div>
-      {error && (
-        <p className="absolute top-[30px] right-5 border-red-500 border-l-4 text-red-500 p-4 bg-white text-[14px] font-sans capitalize">
-          {error}
-        </p>
-      )}
-      {createTradeLoading && (
-        <div className="h-screen fixed p-6 flex items-center justify-center bg-slate-900/50 w-full">
-          <h3>Creating Trade...</h3>
-        </div>
-      )}
-      {tradeCreated && (
-        <div className="absolute top-[30px] right-5 border-green-500 border-l-4 text-green-500 p-4 bg-white text-[14px] font-sans capitalize">
-          <h3>Trade created</h3>
-        </div>
-      )}
+      {error && <Errormodal error={error} />}
+      {createTradeLoading && <Loadingmodal loadingText={"Creating Trade..."} />}
+      {tradeCreated && <Successmodal successText={"Trade Created."} />}
     </div>
   );
 };

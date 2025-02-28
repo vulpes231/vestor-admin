@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getAccessToken } from "../constants";
 import { editTrade, getTrade, resetEditTrade } from "../features/poolSlice";
+import Errormodal from "../components/Errormodal";
+import Loadingmodal from "../components/Loadingmodal";
+import Successmodal from "../components/Successmodal";
 
 const editStyle = {
   formHolder: "flex flex-col gap-1",
@@ -79,7 +82,7 @@ const Edittrade = () => {
     if (accessToken && tradeId) {
       dispatch(getTrade(tradeId));
     }
-  }, [accessToken, tradeId]);
+  }, [accessToken, tradeId, dispatch]);
   return (
     <div className="bg-slate-200 h-screen flex items-center justify-center">
       <div className="flex flex-col gap-6 p-6 bg-white w-[400px] mx-auto">
@@ -140,6 +143,9 @@ const Edittrade = () => {
           <button type="submit">Submit</button>
         </form>
       </div>
+      {error && <Errormodal error={error} />}
+      {editTradeLoading && <Loadingmodal loadingText={"Updating Trade..."} />}
+      {tradeEdited && <Successmodal successText={"Trade Updated."} />}
     </div>
   );
 };
