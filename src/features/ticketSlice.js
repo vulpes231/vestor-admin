@@ -18,7 +18,7 @@ export const getAllTickets = createAsyncThunk(
   "ticket/getAllTickets",
   async () => {
     try {
-      const url = `${devServer}/ticket`;
+      const url = `${devServer}/manageticket`;
       const accessToken = getAccessToken();
       const response = await axios.get(url, {
         headers: {
@@ -37,7 +37,7 @@ export const getUserTicket = createAsyncThunk(
   "ticket/getUserTicket",
   async (ticketId) => {
     try {
-      const url = `${devServer}/ticket/${ticketId}`;
+      const url = `${devServer}/manageticket/${ticketId}`;
       const accessToken = getAccessToken();
       const response = await axios.get(url, {
         headers: {
@@ -56,7 +56,7 @@ export const replyTicket = createAsyncThunk(
   "ticket/replyTicket",
   async (formData) => {
     try {
-      const url = `${devServer}/ticket`;
+      const url = `${devServer}/manageticket`;
       const accessToken = getAccessToken();
       const response = await axios.post(url, formData, {
         headers: {
@@ -74,7 +74,13 @@ export const replyTicket = createAsyncThunk(
 const ticketSlice = createSlice({
   name: "ticket",
   initialState,
-  reducers: {},
+  reducers: {
+    resetReply(state) {
+      state.replyTicketLoading = false;
+      state.replyTicketError = false;
+      state.ticketReplied = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllTickets.pending, (state) => {
@@ -97,7 +103,7 @@ const ticketSlice = createSlice({
       .addCase(getUserTicket.fulfilled, (state, action) => {
         state.userTicketLoading = false;
         state.userTicketError = false;
-        state.userTicket = action.payload.userTicket;
+        state.userTicket = action.payload.ticket;
       })
       .addCase(getUserTicket.rejected, (state, action) => {
         state.userTicketLoading = false;
@@ -120,5 +126,7 @@ const ticketSlice = createSlice({
       });
   },
 });
+
+export const { resetReply } = ticketSlice.actions;
 
 export default ticketSlice.reducer;

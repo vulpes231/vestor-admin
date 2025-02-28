@@ -15,6 +15,8 @@ import Userprofile from "./pages/Userprofile";
 import Createtrade from "./pages/Createtrade";
 import Ticket from "./pages/Ticket";
 import { BiSupport } from "react-icons/bi";
+import Chat from "./pages/Chat";
+import Edittrade from "./pages/Edittrade";
 
 const authLinks = [
   {
@@ -124,6 +126,14 @@ const App = () => {
             element={<Createtrade setActive={setActive} />}
           />
           <Route path="/ticket" element={<Ticket setActive={setActive} />} />
+          <Route
+            path="/chat/:ticketId"
+            element={<Chat setActive={setActive} />}
+          />
+          <Route
+            path="/edit-trade/:tradeId"
+            element={<Edittrade setActive={setActive} />}
+          />
           <Route
             path="/userprofile/:userId"
             element={<Userprofile setActive={setActive} />}

@@ -6,7 +6,7 @@ import { styles } from "../constants/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken } from "../constants";
 import { getInvestments } from "../features/poolSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const headers = [
   {
@@ -36,6 +36,7 @@ const headers = [
 ];
 
 const Pools = ({ setActive }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState(false);
   const { pools, getPoolError } = useSelector((state) => state.invest);
@@ -44,7 +45,13 @@ const Pools = ({ setActive }) => {
   // console.log(pools);
 
   const handleAction = (action, poolId) => {
-    console.log(`Action: ${action}, Pool ID: ${poolId}`);
+    if (action && poolId) {
+      if (action === "edit") {
+        navigate(`/edit-trade/${poolId}`);
+      } else {
+        console.log(`Action: ${action}, Pool ID: ${poolId}`);
+      }
+    }
   };
 
   const modifiedPools =
