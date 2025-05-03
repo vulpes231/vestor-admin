@@ -13,6 +13,9 @@ const initialState = {
   approveTrnxLoading: false,
   approveTrnxError: false,
   trnxApproved: false,
+  createTrnxLoading: false,
+  createTrnxError: false,
+  trnxCreated: false,
 };
 
 export const getAllTrnx = createAsyncThunk("trnx/getTrnxs", async () => {
@@ -76,6 +79,26 @@ export const approveTrnx = createAsyncThunk(
   }
 );
 
+export const createTrnx = createAsyncThunk(
+  "trnx/createTrnx",
+  async (formData) => {
+    const url = `${liveServer}/managetrnx`;
+    const accessToken = getAccessToken();
+    try {
+      const response = await axios.post(url, formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      sendError(error);
+    }
+  }
+);
+
 const trnxSlice = createSlice({
   name: "trnx",
   initialState,
@@ -84,6 +107,11 @@ const trnxSlice = createSlice({
       state.approveTrnxError = false;
       state.approveTrnxLoading = false;
       state.trnxApproved = false;
+    },
+    resetAddTransaction(state) {
+      state.createTrnxError = false;
+      state.createTrnxLoading = false;
+      state.trnxCreated = false;
     },
   },
   extraReducers: (builder) => {
@@ -131,8 +159,22 @@ const trnxSlice = createSlice({
         state.approveTrnxError = action.error.message;
         state.trnxApproved = false;
       });
+    builder
+      .addCase(createTrnx.pending, (state) => {
+        state.createTrnxLoading = true;
+      })
+      .addCase(createTrnx.fulfilled, (state) => {
+        state.createTrnxLoading = false;
+        state.createTrnxError = false;
+        state.trnxCreated = true;
+      })
+      .addCase(createTrnx.rejected, (state, action) => {
+        state.createTrnxLoading = false;
+        state.createTrnxError = action.error.message;
+        state.trnxCreated = false;
+      });
   },
 });
 
-export const { resetApprove } = trnxSlice.reducer;
+export const { resetApprove, resetAddTransaction } = trnxSlice.actions;
 export default trnxSlice.reducer;

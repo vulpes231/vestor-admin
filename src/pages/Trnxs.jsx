@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken } from "../constants";
 import { getAllTrnx } from "../features/trnxSlice";
 import Approvemodal from "../components/Approvemodal";
+import { Link } from "react-router-dom";
+// import {} from "react-icons/io";
+import { FaPlus } from "react-icons/fa6";
 
 const headers = [
   {
@@ -113,7 +116,16 @@ const Trnxs = ({ setActive }) => {
   return (
     <section className={`${styles.authWrapper} p-6`}>
       <div className="flex flex-col gap-6">
-        <h3 className={styles.title}>Transactions</h3>
+        <div className="flex items-center justify-between">
+          <h3 className={styles.title}>Transactions</h3>
+          <Link
+            to={"/create-transaction"}
+            className="capitalize text-[14px] bg-green-600 text-[#fff] w-[189px] h-[38px] flex items-center justify-center rounded-[5px] font-bold gap-2"
+          >
+            <FaPlus />
+            <h6> create transaction</h6>
+          </Link>
+        </div>
         <Datatable headers={headers} data={modifiedTransactions} rowKey="_id" />
       </div>
       {approveModal && (

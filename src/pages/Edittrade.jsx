@@ -3,7 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getAccessToken } from "../constants";
-import { editTrade, getTrade, resetEditTrade } from "../features/poolSlice";
+import {
+  closeTrade,
+  editTrade,
+  getTrade,
+  resetCloseTrade,
+  resetEditTrade,
+} from "../features/poolSlice";
 import Errormodal from "../components/Errormodal";
 import Loadingmodal from "../components/Loadingmodal";
 import Successmodal from "../components/Successmodal";
@@ -20,9 +26,15 @@ const Edittrade = () => {
   const dispatch = useDispatch();
   const accessToken = getAccessToken();
 
-  const { trade, editTradeError, editTradeLoading, tradeEdited } = useSelector(
-    (state) => state.invest
-  );
+  const {
+    trade,
+    editTradeError,
+    editTradeLoading,
+    tradeEdited,
+    closeTradeError,
+    closeTradeLoading,
+    positionClosed,
+  } = useSelector((state) => state.invest);
 
   const [form, setForm] = useState({
     amount: "",
@@ -49,11 +61,23 @@ const Edittrade = () => {
     dispatch(editTrade(data));
   };
 
+  const handleCloseTrade = (e) => {
+    e.preventDefault();
+
+    dispatch(closeTrade({ tradeId: tradeId }));
+  };
+
   useEffect(() => {
     if (editTradeError) {
       setError(editTradeError);
     }
   }, [editTradeError]);
+
+  useEffect(() => {
+    if (closeTradeError) {
+      setError(closeTradeError);
+    }
+  }, [closeTradeError]);
 
   useEffect(() => {
     let timeout;
@@ -71,6 +95,7 @@ const Edittrade = () => {
     if (tradeEdited) {
       timeout = setTimeout(() => {
         dispatch(resetEditTrade());
+        dispatch(resetCloseTrade());
         // dispatch(getUserTicket());
         window.location.reload();
       }, 3000);
@@ -79,19 +104,34 @@ const Edittrade = () => {
   }, [tradeEdited, dispatch]);
 
   useEffect(() => {
+    let timeout;
+    if (positionClosed) {
+      timeout = setTimeout(() => {
+        dispatch(resetCloseTrade());
+        // dispatch(getUserTicket());
+        window.location.href = "/pools";
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [positionClosed, dispatch]);
+
+  useEffect(() => {
     if (accessToken && tradeId) {
       dispatch(getTrade(tradeId));
     }
   }, [accessToken, tradeId, dispatch]);
+
   return (
     <div className="bg-slate-200 h-screen flex items-center justify-center">
       <div className="flex flex-col gap-6 p-6 bg-white w-[400px] mx-auto">
-        <div>
+        <span className="flex justify-between items-center">
           <h3 className="text-[18px] leading-[22px] font-semibold text-[#213325]">
-            Edit trade{" "}
+            Edit trade
           </h3>
-          <h6>{tradeId}</h6>
-        </div>
+          <button onClick={handleCloseTrade}>close trade</button>
+        </span>
+        {/* <h6>{tradeId}</h6> */}
+
         <hr />
 
         <div className="text-[14px] leading-[22px] font-medium text-[#979797] text-center">
@@ -145,7 +185,9 @@ const Edittrade = () => {
       </div>
       {error && <Errormodal error={error} />}
       {editTradeLoading && <Loadingmodal loadingText={"Updating Trade..."} />}
+      {closeTradeLoading && <Loadingmodal loadingText={"Closing Trade..."} />}
       {tradeEdited && <Successmodal successText={"Trade Updated."} />}
+      {positionClosed && <Successmodal successText={"Trade Closed."} />}
     </div>
   );
 };

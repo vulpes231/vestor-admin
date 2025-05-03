@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken } from "../constants";
 import { getInvestments } from "../features/poolSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { FaPlus } from "react-icons/fa6";
 
 const headers = [
   {
@@ -106,9 +107,10 @@ const Pools = ({ setActive }) => {
           <h3 className={styles.title}>Pools</h3>
           <Link
             to={"/create-trade"}
-            className="w-[120px] h-[38px] flex items-center justify-center bg-green-600 text-[#fff] font-medium capitalize rounded-[5px]"
+            className="capitalize text-[14px] bg-green-600 text-[#fff] w-[169px] h-[38px] flex items-center justify-center rounded-[5px] font-bold gap-2"
           >
-            create trade
+            <FaPlus />
+            <h6> create trade</h6>
           </Link>
         </div>
         <Datatable headers={headers} data={modifiedPools} rowKey="_id" />

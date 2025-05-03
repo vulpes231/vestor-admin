@@ -23,6 +23,9 @@ const initialState = {
   editTradeLoading: false,
   editTradeError: false,
   tradeEdited: false,
+  closeTradeLoading: false,
+  closeTradeError: false,
+  positionClosed: false,
 };
 
 export const getInvestments = createAsyncThunk(
@@ -128,6 +131,28 @@ export const editTrade = createAsyncThunk(
   }
 );
 
+export const closeTrade = createAsyncThunk(
+  "invest/closeTrade",
+  async (formData) => {
+    const url = `${liveServer}/managetrade/close`;
+
+    const accessToken = getAccessToken();
+    try {
+      const response = await axios.post(url, formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      sendError(error);
+      throw error;
+    }
+  }
+);
+
 const poolSlice = createSlice({
   name: "invest",
   initialState,
@@ -141,6 +166,11 @@ const poolSlice = createSlice({
       state.editTradeLoading = false;
       state.editTradeError = false;
       state.tradeEdited = false;
+    },
+    resetCloseTrade(state) {
+      state.closeTradeLoading = false;
+      state.closeTradeError = false;
+      state.positionClosed = false;
     },
   },
   extraReducers: (builder) => {
@@ -214,9 +244,24 @@ const poolSlice = createSlice({
         state.editTradeError = action.error.message;
         state.tradeEdited = false;
       });
+    builder
+      .addCase(closeTrade.pending, (state) => {
+        state.closeTradeLoading = true;
+      })
+      .addCase(closeTrade.fulfilled, (state) => {
+        state.closeTradeLoading = false;
+        state.closeTradeError = false;
+        state.positionClosed = true;
+      })
+      .addCase(closeTrade.rejected, (state, action) => {
+        state.closeTradeLoading = false;
+        state.closeTradeError = action.error.message;
+        state.positionClosed = false;
+      });
   },
 });
 
-export const { resetCreateTrade, resetEditTrade } = poolSlice.actions;
+export const { resetCreateTrade, resetEditTrade, resetCloseTrade } =
+  poolSlice.actions;
 
 export default poolSlice.reducer;

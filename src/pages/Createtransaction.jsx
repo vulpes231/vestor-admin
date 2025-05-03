@@ -1,80 +1,43 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAccessToken } from "../constants";
+import { getAccessToken, isValidDateFormat } from "../constants";
 import { getUsers } from "../features/userSlice";
-import {
-  createTrade,
-  getUserBots,
-  resetCreateTrade,
-} from "../features/poolSlice";
+// import { Createtransaction, getUserBots } from "../features/poolSlice";
 import Loadingmodal from "../components/Loadingmodal";
 import Errormodal from "../components/Errormodal";
 import Successmodal from "../components/Successmodal";
-import { getAvailableAssets } from "../features/assetSlice";
-import Assetsearch from "./Assetsearch";
-
-const markets = [
-  {
-    id: "gold",
-    name: "XAU/USD",
-  },
-  {
-    id: "bitcoin",
-    name: "BTC/USD",
-  },
-  {
-    id: "ethereum",
-    name: "ETH/USD",
-  },
-  {
-    id: "amazon",
-    name: "AMZN",
-  },
-  {
-    id: "netflix",
-    name: "NFLX",
-  },
-  {
-    id: "apple",
-    name: "APL",
-  },
-  {
-    id: "doge",
-    name: "DOGE/USDT",
-  },
-];
+import { createTrnx, resetAddTransaction } from "../features/trnxSlice";
 
 const tradeStyle = {
-  label: "text-[14px] text-[#979797] leading-[22px] capitalize font-normal",
+  label: "text-[13px] text-[#979797] leading-[22px] capitalize font-normal",
   select:
     "text-[12px] text-[#212325] leading-[22px] capitalize font-normal h-[38px] border border-[#DEDEDE] bg-white p-2",
+  input:
+    "text-[16px] text-[#212325] leading-[22px] font-normal h-[38px] border border-[#DEDEDE] bg-white p-2 outline-none",
   formHolder: "flex flex-col gap-1",
   button:
-    "bg-green-600 text-white font-medium w-[120px] h-[38px] rounded-[5px] capitalize text-[16px]",
+    "bg-green-600 text-white font-bold w-[189px] h-[38px] rounded-[5px] capitalize text-[16px]",
 };
 
-const Createtrade = () => {
+const Createtransaction = () => {
   const dispatch = useDispatch();
   const accessToken = getAccessToken();
 
   const [form, setForm] = useState({
     userId: "",
-    assetName: "",
-    assetSymbol: "",
+    type: "",
+    coin: "btc",
     amount: "",
-    type: "buy",
+    memo: "",
     date: "",
+    method: "",
   });
-
   const [error, setError] = useState("");
-  const [searchAsset, setSearchAsset] = useState("");
-  const [symbol, setSymbol] = useState("");
 
   const { users } = useSelector((state) => state.users);
-  const { assets } = useSelector((state) => state.asset);
-  const { createTradeError, createTradeLoading, tradeCreated } = useSelector(
-    (state) => state.invest
+  const { createTrnxLoading, createTrnxError, trnxCreated } = useSelector(
+    (state) => state.trnx
   );
 
   const handleInput = (e) => {
@@ -84,51 +47,26 @@ const Createtrade = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // for (const key in form) {
-    //   if (form[key] === "") {
-    //     setError(`${key} required!`);
-    //     return;
-    //   }
-    // }
+    if (!isValidDateFormat(form.date)) {
+      setError("Invalid date format. use MMM DD YYYY");
+      return;
+    }
 
-    console.log(form.type);
-
-    const formData = {
-      amount: form.amount,
-      assetName: searchAsset,
-      assetSymbol: symbol,
-      userId: form.userId,
-      type: form.type,
-      date: form.date,
-    };
-    console.log(formData);
-    dispatch(createTrade(formData));
+    console.log(form);
+    dispatch(createTrnx(form));
   };
 
   useEffect(() => {
     if (accessToken) {
       dispatch(getUsers());
-      dispatch(getAvailableAssets());
     }
   }, [accessToken, dispatch]);
-
-  // useEffect(() => {
-  //   if (assets) {
-  //     console.log(assets);
-  //   }
-  // }, [assets, dispatch]);
-
-  useEffect(() => {
-    if (accessToken && form.userId) {
-      dispatch(getUserBots(form.userId));
-    }
-  }, [accessToken, dispatch, form.userId]);
 
   useEffect(() => {
     let timeout;
     if (error) {
       timeout = setTimeout(() => {
-        dispatch(resetCreateTrade());
+        dispatch(resetAddTransaction());
         setError("");
       }, 3000);
     }
@@ -137,25 +75,26 @@ const Createtrade = () => {
 
   useEffect(() => {
     let timeout;
-    if (tradeCreated) {
+    if (trnxCreated) {
       timeout = setTimeout(() => {
-        window.location.href = "/pools";
+        dispatch(resetAddTransaction());
+        window.location.href = "/trnxs";
       }, 3000);
     }
     return () => clearTimeout(timeout);
-  }, [tradeCreated]);
+  }, [trnxCreated, dispatch]);
 
   useEffect(() => {
-    if (createTradeError) {
-      setError(createTradeError);
+    if (createTrnxError) {
+      setError(createTrnxError);
     }
-  }, [createTradeError]);
+  }, [createTrnxError]);
 
   return (
     <div className="bg-slate-200 min-h-screen flex items-center justify-center">
       <div className="p-6 bg-white w-[420px] mx-auto rounded-[10px] flex flex-col gap-4">
         <h3 className="text-[#212325]/80 text-[16px] font-semibold leading-[21px] capitalize">
-          create new trade
+          create new transaction
         </h3>
         <form action="" className="flex flex-col gap-4">
           <div className={tradeStyle.formHolder}>
@@ -181,7 +120,42 @@ const Createtrade = () => {
           </div>
           <div className={tradeStyle.formHolder}>
             <label className={tradeStyle.label} htmlFor="">
-              Order type
+              method
+            </label>
+            <select
+              onChange={handleInput}
+              value={form.method}
+              className={tradeStyle.select}
+              name="method"
+            >
+              <option value="">select method</option>
+              <option value="coin">coin</option>
+              <option value="bank">bank</option>
+            </select>
+          </div>
+
+          {form.method === "coin" && (
+            <div className={tradeStyle.formHolder}>
+              <label className={tradeStyle.label} htmlFor="">
+                coin
+              </label>
+              <select
+                onChange={handleInput}
+                value={form.coin}
+                className={tradeStyle.select}
+                name="coin"
+              >
+                <option value="btc">btc</option>
+                <option value="ethErc">ethErc</option>
+                <option value="ethTrc">ethTrc</option>
+                <option value="usdtErc">usdtErc</option>
+                <option value="usdtTrc">usdtTrc</option>
+              </select>
+            </div>
+          )}
+          {/* <div className={tradeStyle.formHolder}>
+            <label className={tradeStyle.label} htmlFor="">
+              select type
             </label>
             <select
               onChange={handleInput}
@@ -189,33 +163,24 @@ const Createtrade = () => {
               className={tradeStyle.select}
               name="type"
             >
-              <option value="buy">buy</option>
-              <option value="sell">sell</option>
+              <option value="">select type</option>
+              <option value="debit">debit</option>
+              <option value="credit">credit</option>
             </select>
-          </div>
-          <div className={tradeStyle.formHolder}>
-            <Assetsearch
-              myAssets={assets}
-              searchAsset={searchAsset}
-              setSearchAsset={setSearchAsset}
-              setSymbol={setSymbol}
-            />
-          </div>
-          <div className={"flex items-center gap-2"}>
-            <h6>{searchAsset}</h6>
-            <h6 className="uppercase">{symbol}</h6>
-          </div>
+          </div> */}
+
           <div className={tradeStyle.formHolder}>
             <label className={tradeStyle.label} htmlFor="">
               amount
             </label>
             <input
               type="text"
-              className={tradeStyle.select}
+              className={tradeStyle.input}
               placeholder="$0"
               onChange={handleInput}
               value={form.amount}
               name="amount"
+              autoComplete="off"
             />
           </div>
           <div className={tradeStyle.formHolder}>
@@ -224,25 +189,42 @@ const Createtrade = () => {
             </label>
             <input
               type="text"
-              className={tradeStyle.select}
-              placeholder=""
+              className={tradeStyle.input}
+              placeholder="E.g. Feb 25 2025"
               onChange={handleInput}
               value={form.date}
               name="date"
+              autoComplete="off"
+            />
+          </div>
+          <div className={tradeStyle.formHolder}>
+            <label className={tradeStyle.label} htmlFor="">
+              memo
+            </label>
+            <input
+              type="text"
+              className={tradeStyle.input}
+              placeholder="Description"
+              onChange={handleInput}
+              value={form.memo}
+              name="memo"
+              autoComplete="off"
             />
           </div>
           <div>
             <button onClick={handleSubmit} className={tradeStyle.button}>
-              create trade
+              create transaction
             </button>
           </div>
         </form>
       </div>
       {error && <Errormodal error={error} />}
-      {createTradeLoading && <Loadingmodal loadingText={"Creating Trade..."} />}
-      {tradeCreated && <Successmodal successText={"Trade Created."} />}
+      {createTrnxLoading && (
+        <Loadingmodal loadingText={"Creating Transaction..."} />
+      )}
+      {trnxCreated && <Successmodal successText={"Transaction Created."} />}
     </div>
   );
 };
 
-export default Createtrade;
+export default Createtransaction;
