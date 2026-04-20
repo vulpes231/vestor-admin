@@ -52,7 +52,7 @@ export const getTrnxById = createAsyncThunk(
     } catch (error) {
       sendError(error);
     }
-  }
+  },
 );
 
 export const approveTrnx = createAsyncThunk(
@@ -69,14 +69,14 @@ export const approveTrnx = createAsyncThunk(
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-        }
+        },
       );
       console.log(response.data);
       return response.data;
     } catch (error) {
       sendError(error);
     }
-  }
+  },
 );
 
 export const createTrnx = createAsyncThunk(
@@ -96,7 +96,7 @@ export const createTrnx = createAsyncThunk(
     } catch (error) {
       sendError(error);
     }
-  }
+  },
 );
 
 const trnxSlice = createSlice({

@@ -53,7 +53,7 @@ const Createtransaction = () => {
     }
 
     console.log(form);
-    dispatch(createTrnx(form));
+    // dispatch(createTrnx(form));
   };
 
   useEffect(() => {

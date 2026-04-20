@@ -17,6 +17,7 @@ export const auth = createAsyncThunk("login/auth", async (formData) => {
       headers: {
         "Content-Type": "application/json",
       },
+      withCredentials: true,
     });
     // console.log(response.data);
     return response.data;

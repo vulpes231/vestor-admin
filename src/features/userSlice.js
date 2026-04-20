@@ -62,13 +62,13 @@ export const getUserInfo = createAsyncThunk(
       sendError(error);
       throw error;
     }
-  }
+  },
 );
 
 export const setUserWallet = createAsyncThunk(
   "users/setUserWallet",
   async (formData) => {
-    const url = `${devServer}/manageadmin/users`;
+    const url = `${liveServer}/manageadmin/users`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.put(url, formData, {
@@ -83,7 +83,7 @@ export const setUserWallet = createAsyncThunk(
       sendError(error);
       throw error;
     }
-  }
+  },
 );
 
 export const disableWithdraw = createAsyncThunk(
@@ -104,7 +104,7 @@ export const disableWithdraw = createAsyncThunk(
       sendError(error);
       throw error;
     }
-  }
+  },
 );
 
 export const enableWithdraw = createAsyncThunk(
@@ -125,7 +125,7 @@ export const enableWithdraw = createAsyncThunk(
       sendError(error);
       throw error;
     }
-  }
+  },
 );
 
 const userSlice = createSlice({

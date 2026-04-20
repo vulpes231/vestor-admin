@@ -28,7 +28,7 @@ export const getAvailableAssets = createAsyncThunk(
     } catch (error) {
       sendError(error);
     }
-  }
+  },
 );
 
 export const getAssetByParam = createAsyncThunk(
@@ -48,7 +48,7 @@ export const getAssetByParam = createAsyncThunk(
     } catch (error) {
       sendError(error);
     }
-  }
+  },
 );
 
 const assetSlice = createSlice({

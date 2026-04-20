@@ -46,7 +46,7 @@ export const getInvestments = createAsyncThunk(
       sendError(error);
       throw error;
     }
-  }
+  },
 );
 
 export const getUserBots = createAsyncThunk(
@@ -67,7 +67,7 @@ export const getUserBots = createAsyncThunk(
       sendError(error);
       throw error;
     }
-  }
+  },
 );
 
 export const getTrade = createAsyncThunk("invest/getTrade", async (tradeId) => {
@@ -106,7 +106,7 @@ export const createTrade = createAsyncThunk(
       sendError(error);
       throw error;
     }
-  }
+  },
 );
 
 export const editTrade = createAsyncThunk(
@@ -128,7 +128,7 @@ export const editTrade = createAsyncThunk(
       sendError(error);
       throw error;
     }
-  }
+  },
 );
 
 export const closeTrade = createAsyncThunk(
@@ -150,7 +150,7 @@ export const closeTrade = createAsyncThunk(
       sendError(error);
       throw error;
     }
-  }
+  },
 );
 
 const poolSlice = createSlice({

@@ -30,7 +30,7 @@ export const getAllTickets = createAsyncThunk(
     } catch (error) {
       sendError(error);
     }
-  }
+  },
 );
 
 export const getUserTicket = createAsyncThunk(
@@ -49,7 +49,7 @@ export const getUserTicket = createAsyncThunk(
     } catch (error) {
       sendError(error);
     }
-  }
+  },
 );
 
 export const replyTicket = createAsyncThunk(
@@ -68,7 +68,7 @@ export const replyTicket = createAsyncThunk(
     } catch (error) {
       sendError(error);
     }
-  }
+  },
 );
 
 const ticketSlice = createSlice({

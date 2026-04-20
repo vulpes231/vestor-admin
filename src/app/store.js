@@ -6,6 +6,7 @@ import trnxReducer from "../features/trnxSlice";
 import verifyReducer from "../features/verifySlice";
 import ticketReducer from "../features/ticketSlice";
 import assetReducer from "../features/assetSlice";
+import logoutReducer from "../features/logoutSlice";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     verify: verifyReducer,
     ticket: ticketReducer,
     asset: assetReducer,
+    logout: logoutReducer,
   },
 });
 
